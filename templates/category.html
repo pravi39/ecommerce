@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+{% if category %}
+{{category.description|truncatewords:155 }}
+{% else %}
+Welcome to ABCstore where you can buys different items...
+{% endif %}
+{% endblock %}
+{% block title %}
+{% if category %}
+{{category.name }}- Shop it store
+{% else %}
+See our New Collections - Shop it store
+{% endif %}
+{% endblock %}
+{% block content %}
+  {% if category %}
+<div>
+    <div class="row my_row_class">
+        <div class="mx_auto">
+        <p><a href="{% url 'ecomapp:allProdCat' %}">Our product Collections</a></p>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="mx_auto">
+    {% if category %}
+    <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}" width="1115px" height="500px">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">{{category.name}}</h1>
+    <p class="text-justify">{{category.description}}</p>
+</div>
+{% else %}
+<div>
+    <img class="img-fluid" src="{% static 'img/banner2.jpg' %}" alt="Responsive image">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">Our products collection</h1>
+    <p class="text-justify">Art is a diverse range of human activity, and resulting product, that involves creative or imaginative talent expressive of technical proficiency, beauty, emotional power, or conceptual ideas.[1][2][3] There is no generally agreed definition of what constitutes art,[4][5][6] and its interpretation has varied greatly throughout history and across cultures. In the Western tradition, the three classical branches of visual art are painting, sculpture, and architecture.[7] Theatre, dance, and other performing arts, as well as literature, music, film and other media such as interactive media, are included in a broader definition of the arts.</p>
+</div>
+{% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4  col-lg-4">
+            <div class="card text-center" style="min-width:18rem;">
+                <a href="{{product.get_url}}"><img class="card-img-top my_image"  width="250px" height="250px" src="{{product.image.url}}" alt="{{product.name}}"></a>
+                <div class="card-body">
+                    <h4>{{product.name}}</h4>
+                    <p>{{product.price}}</p>
+                </div>
+                <br>
+            </div>
+        </div>
+        <br>
+        {% endfor %}
+    </div>
+    <br>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
+<style>
+
+</style>
